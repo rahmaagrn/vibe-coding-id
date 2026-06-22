@@ -1,0 +1,143 @@
+/* ============================================
+   Vibe Coding Starter Kit — Custom Styles
+   Target: Bahasa Indonesia, pemula, santai, modern
+   Filosofi: Ramah, tidak menakutkan, berwarna
+   ============================================ */
+
+/* --- Warna Brand --- */
+:root {
+  /* Primary: Hijau toska — segar, modern, tidak "seram" seperti merah/ungu */
+  --sl-color-accent-high: #0d9488;
+  --sl-color-accent: #14b8a6;
+  --sl-color-accent-low: #5eead4;
+
+  /* Navigasi sidebar */
+  --sl-color-text-accent: var(--sl-color-accent);
+
+  /* Background lebih hangat */
+  --sl-color-bg-nav: #f8fafc;
+  --sl-color-bg-sidebar: #f8fafc;
+
+  /* Hero background */
+  --sl-color-hero-bg: linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #14b8a6 100%);
+}
+
+/* Dark mode */
+:root[data-theme="dark"] {
+  --sl-color-accent-high: #5eead4;
+  --sl-color-accent: #14b8a6;
+  --sl-color-accent-low: #0d9488;
+  --sl-color-bg-nav: #0f172a;
+  --sl-color-bg-sidebar: #0f172a;
+}
+
+/* --- Hero Area --- */
+.hero {
+  padding: 4rem 0;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #0f766e, #14b8a6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Dark mode: hero title tetap terbaca */
+:root[data-theme="dark"] .hero h1 {
+  background: linear-gradient(135deg, #5eead4, #2dd4bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero .tagline {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: var(--sl-color-gray-3);
+  max-width: 65ch;
+  margin: 1rem auto;
+  line-height: 1.6;
+}
+
+/* --- Card Grid --- */
+.card {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="dark"] .card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.card svg {
+  color: var(--sl-color-accent);
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* --- Sidebar --- */
+sidebar a[aria-current="page"],
+.sidebar a[aria-current="page"] {
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-accent-high);
+  font-weight: 600;
+}
+
+/* -- Link di dalam konten -- */
+.sl-markdown-content a {
+  color: var(--sl-color-accent-high);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.sl-markdown-content a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* --- Tombol CTA --- */
+.sl-link-button.primary {
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sl-link-button.primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+/* --- Footer custom --- */
+.content-footer {
+  border-top: 1px solid var(--sl-color-gray-5);
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--sl-color-gray-3);
+}
+
+/* --- Mobile touch ups --- */
+@media (max-width: 50rem) {
+  .hero {
+    padding: 2rem 0;
+  }
+
+  .sl-markdown-content table {
+    font-size: 0.8rem;
+  }
+}

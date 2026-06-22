@@ -17,6 +17,14 @@ export default defineConfig({
 					lang: 'id'
 				}
 			},
+			customCss: [
+				'./src/styles/kustom.css',
+			],
+			social: [{
+				icon: 'github',
+				label: 'GitHub',
+				href: 'https://github.com/rahmaagrn/vibe-coding-id'
+			}],
 			sidebar: [
 				{
 					label: 'Mulai',
