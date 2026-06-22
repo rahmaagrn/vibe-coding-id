@@ -1,0 +1,210 @@
+---
+export interface Props {
+  term?: string;
+}
+
+const { term } = Astro.props;
+
+// Runtime glossary data — imported via separate JSON later
+// For now, inline glossary for standalone usage
+interface GlossaryEntry {
+  term: string;
+  definition: string;
+  example?: string;
+}
+
+const glossary: Record<string, GlossaryEntry> = {
+  "API": {
+    term: "API",
+    definition: "Antarmuka yang memungkinkan dua program komputer saling bicara dan bertukar data",
+    example: "Seperti pelayan di restoran — kamu pesan, dia sampaikan ke dapur, bawain hasilnya."
+  },
+  "framework": {
+    term: "Framework",
+    definition: "Kerangka kerja yang bikin coding lebih cepat dan terstruktur",
+    example: "Bayangkan seperti template bangunan — kamu tinggal isi bagian dalamnya."
+  },
+  "prototype": {
+    term: "Prototipe",
+    definition: "Versi percobaan dari ide kamu, dibuat cepat untuk testing",
+    example: "Seperti maket bangunan — bukan gedung asli, tapi cukup buat lihat bentuknya."
+  },
+  "deployment": {
+    term: "Deployment",
+    definition: "Proses bikin aplikasi kamu bisa diakses orang lain secara online",
+    example: "Dari komputer kamu → ke internet."
+  },
+  "prompt": {
+    term: "Prompt",
+    definition: "Perintah atau deskripsi yang kamu kasih ke AI untuk menghasilkan sesuatu",
+    example: "Semakin jelas prompt kamu, semakin bagus hasil AI-nya."
+  },
+  "repository": {
+    term: "Repository / Repo",
+    definition: "Tempat menyimpan semua file proyek kamu, seperti folder di komputer tapi online",
+    example: "Seperti Google Drive khusus untuk kode."
+  },
+  "bug": {
+    term: "Bug",
+    definition: "Kesalahan di kode yang bikin program tidak jalan seperti yang diharapkan",
+    example: "Tombol 'simpan' tidak bekerja setelah diklik — itu bug."
+  },
+  "debug": {
+    term: "Debug",
+    definition: "Proses mencari dan memperbaiki bug di kode",
+    example: "Seperti detektif — cari pelaku (bug) dan perbaiki."
+  },
+  "MVP": {
+    term: "MVP",
+    definition: "Minimum Viable Product — produk paling sederhana yang masih berguna",
+    example: "Versi 1 aplikasi kamu: cuma 1 fitur, tapi sudah bisa dipakai."
+  },
+  "build": {
+    term: "Build",
+    definition: "Proses mengubah kode menjadi aplikasi yang bisa dijalankan",
+    example: "Seperti memasak — dari bahan mentah (kode) jadi makanan siap santap (aplikasi)."
+  },
+  "syntax": {
+    term: "Syntax",
+    definition: "Aturan penulisan dalam bahasa pemrograman",
+    example: "Seperti grammar di bahasa Indonesia — kalau salah tulis, komputer bingung."
+  },
+  "terminal": {
+    term: "Terminal",
+    definition: "Tampilan teks untuk memberi perintah ke komputer langsung",
+    example: "Seperti layar hitam tempat kamu 'ngobrol' langsung dengan komputer."
+  },
+  "AI": {
+    term: "AI (Kecerdasan Buatan)",
+    definition: "Program komputer yang bisa berpikir dan belajar seperti manusia",
+    example: "Claude, ChatGPT, Gemini — mereka adalah AI."
+  },
+  "model": {
+    term: "Model AI",
+    definition: "'Otak' dari AI — versi dan jenis AI yang punya kemampuan berbeda",
+    example: "Claude Opus, Claude Sonnet, GPT-4 — beda model beda kemampuan."
+  },
+  "open-source": {
+    term: "Open Source",
+    definition: "Proyek yang kodenya bisa dilihat, dipakai, dan dikontribusi siapa saja",
+    example: "Seperti resep masakan yang dibagikan gratis — semua orang bisa lihat dan bikin."
+  },
+  "iteration": {
+    term: "Iterasi",
+    definition: "Proses bikin sesuatu → feedback → diperbaiki → bikin lagi",
+    example: "Loop yang terus berulang sampai hasilnya bagus."
+  },
+  "agent": {
+    term: "Agent AI",
+    definition: "AI yang bisa melakukan tugas multi-langkah sendiri — bukan cuma jawab pertanyaan",
+    example: "AI yang bisa nulis kode, running test, dan fix error tanpa disuruh tiap langkah."
+  },
+  "fork": {
+    term: "Fork",
+    definition: "Meng-copy repositori orang lain ke akun GitHub kamu",
+    example: "Seperti fotokopi buku — kamu punya salinan sendiri yang bisa kamu tulis-tulisi."
+  }
+};
+
+const entry = term ? glossary[term.toLowerCase()] : null;
+let definition = '';
+let exampleText = '';
+
+if (entry) {
+  definition = entry.definition;
+  exampleText = entry.example || '';
+}
+
+// If no term lookup, use the slot content as inline tooltip
+// Astro slot fallback
+---
+
+<span class="jargon-term" data-tooltip={definition} data-example={exampleText}>
+  <slot />
+  {term && <span class="jargon-hint" aria-hidden="true">  ​</span>}
+</span>
+
+{
+  exampleText && (
+    <span class="jargon-tooltip" role="tooltip">
+      <span class="jargon-def">{definition}</span>
+      {exampleText && <span class="jargon-example"><strong>Contoh:</strong> {exampleText}</span>}
+    </span>
+  )
+}
+
+<span class="sr-only" aria-live="polite">{definition}</span>
+
+<script>
+// Client-side interactivity: show tooltip on click/tap for mobile
+const terms = document.querySelectorAll('.jargon-term');
+terms.forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const tooltip = el.parentElement?.querySelector('.jargon-tooltip');
+    if (tooltip) {
+      const isVisible = tooltip.style.display === 'block';
+      // Hide all tooltips first
+      document.querySelectorAll('.jargon-tooltip').forEach(t => t.style.display = 'none');
+      tooltip.style.display = isVisible ? 'none' : 'block';
+    }
+  });
+});
+// Hide tooltip when clicking elsewhere
+document.addEventListener('click', () => {
+  document.querySelectorAll('.jargon-tooltip').forEach(t => t.style.display = 'none');
+});
+</script>
+
+<style>
+  .jargon-term {
+    text-decoration: underline dotted var(--sl-color-accent);
+    text-underline-offset: 3px;
+    cursor: help;
+    position: relative;
+  }
+  .jargon-term:hover {
+    color: var(--sl-color-accent);
+  }
+  .jargon-tooltip {
+    display: none;
+    position: absolute;
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-white);
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    max-width: 300px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    z-index: 100;
+    margin-top: 0.25rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .jargon-term:hover .jargon-tooltip,
+  .jargon-term:focus-within .jargon-tooltip {
+    display: block;
+  }
+  :global(.jargon-term) {
+    /* global scope for MDX compatibility */
+  }
+  .jargon-def {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .jargon-example {
+    display: block;
+    opacity: 0.8;
+    font-size: 0.8rem;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+  }
+</style>
