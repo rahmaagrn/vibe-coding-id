@@ -5,7 +5,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://username.github.io',
+	site: 'https://rahmaagrn.github.io',
 	base: '/vibe-coding-id',
 	integrations: [
 		starlight({
